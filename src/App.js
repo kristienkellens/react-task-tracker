@@ -24,10 +24,31 @@ function App() {
     },
   ]);
 
+  //delete task function
+  const deleteTask = (id) => {
+    //console.log("delete", id);
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
+
+  //toggle reminder function
+  const toggleReminder = (id) => {
+    //console.log("reminder toggle", id);
+    //if task.id = id parametre, map the array and toggle that task's reminder to true/false or vice versa. Else, task remains as is
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, reminder: !task.reminder } : task
+      )
+    );
+  };
+
   return (
     <div className="container">
       <Header />
-      <Tasks tasks={tasks} />
+      {tasks.length > 0 ? (
+        <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />
+      ) : (
+        "No tasks to show"
+      )}
     </div>
   );
 }
