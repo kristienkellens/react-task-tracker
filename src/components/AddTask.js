@@ -1,11 +1,30 @@
 import React, { useState } from "react";
 
-const AddTask = () => {
+const AddTask = ({ onAdd }) => {
   const [text, setText] = useState("");
-  const [day, setDay] = useState("");
+  const [date, setDate] = useState("");
   const [reminder, setReminder] = useState(false);
+
+  const onSubmit = (e) => {
+    //prevent trying to go to submit page
+    e.preventDefault();
+
+    //text validation
+    if (!text) {
+      alert("Please add a task");
+      return;
+    }
+
+    //if validation ok, onAdd
+    onAdd({ text, date, reminder });
+
+    //then, clear the form
+    setText("");
+    setDate("");
+    setReminder(false);
+  };
   return (
-    <form className="add-form">
+    <form className="add-form" onSubmit={onSubmit}>
       <div className="form-control">
         <label>Task</label>
         <input
@@ -20,14 +39,15 @@ const AddTask = () => {
         <input
           type="text"
           placeholder="Add day & time"
-          value={day}
-          onChange={(e) => setDay(e.target.value)}
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
         />
       </div>
       <div className="form-control form-control-check">
         <label>Set reminder</label>
         <input
           type="checkbox"
+          checked={reminder}
           value={reminder}
           onChange={(e) => setReminder(e.currentTarget.checked)}
         />
